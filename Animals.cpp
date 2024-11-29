@@ -1,20 +1,109 @@
-// Animals.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <string>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+using namespace std;
+
+class Animal {
+public:
+    string name;
+    string type;
+    double weight;
+    string continent;
+
+    virtual void Input() {
+        cout << "Enter name: ";
+        getline(cin, name);
+        cout << "Enter type: ";
+        getline(cin, type);
+
+        while (true) {
+            cout << "Enter weight: ";
+            if (cin >> weight) {
+                break;
+            }
+            else {
+                cout << "Invalid input. Please enter a number.\n";
+                cin.clear();
+                cin.ignore(10000, '\n');
+            }
+        }
+        cin.ignore(10000, '\n'); 
+
+        cout << "Enter continent: ";
+        getline(cin, continent);
+    }
+
+    virtual void Print() {
+        cout << "Name: " << name
+            << ", Type: " << type
+            << ", Weight: " << weight
+            << ", Continent: " << continent << endl;
+    }
+
+    virtual void Eat() {
+        cout << name << " is eating." << endl;
+    }
+
+    virtual void Sound() {
+        cout << name << " makes a sound." << endl;
+    }
+
+    virtual ~Animal() {}
+};
+
+class Parrot : public Animal {
+public:
+    void Sound() override {
+        cout << name << " says: Squawk!" << endl;
+    }
+};
+
+class Elephant : public Animal {
+public:
+    void Sound() override {
+        cout << name << " trumpets!" << endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void Sound() override {
+        cout << name << " barks!" << endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void Sound() override {
+        cout << name << " meows!" << endl;
+    }
+};
+
+int main() {
+    Animal* myAnimal[4];
+
+    myAnimal[0] = new Parrot();
+    myAnimal[1] = new Elephant();
+    myAnimal[2] = new Dog();
+    myAnimal[3] = new Cat();
+
+    for (int i = 0; i < 4; i++) {
+        cout << "\nInput details for animal " << (i + 1) << ":\n";
+        myAnimal[i]->Input();
+    }
+
+    cout << "\nDisplaying animal details and actions:\n";
+    for (int i = 0; i < 4; i++) {
+        myAnimal[i]->Print();
+        myAnimal[i]->Eat();
+        myAnimal[i]->Sound();
+        cout << endl;
+    }
+
+    for (int i = 0; i < 4; i++) {
+        cout << "Deleting animal " << (i + 1) << "...\n";
+        delete myAnimal[i];
+    }
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
